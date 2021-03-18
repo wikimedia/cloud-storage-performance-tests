@@ -1,0 +1,7 @@
+[gerrit]
+host=gerrit.wikimedia.org
+port=29418
+project=cloud/storage-performance-tests.git
+track=1
+defaultrebase=0
+defaultbranch=main
