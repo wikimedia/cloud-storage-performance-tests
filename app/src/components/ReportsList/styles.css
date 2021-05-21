@@ -1,0 +1,41 @@
+.reports-list {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.reports-sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+.report-bullets {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+}
+
+
+.reports-list-title {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    background-color: dimgray;
+}
+
+.report-entry-name {
+    text-align: left;
+    border: ghostwhite;
+    border-width: 10px;
+}
+.report-entry-name-selected {
+    text-align: left;
+    background-color: rgb(0, 0, 134);
+}
+
+.report-entry-name:hover {
+    text-align: left;
+    background-color: blue;
+}

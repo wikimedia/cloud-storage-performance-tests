@@ -1,2 +1,6 @@
 *.sw?
 __pycache__
+node_modules
+.husky
+.vscode
+build
