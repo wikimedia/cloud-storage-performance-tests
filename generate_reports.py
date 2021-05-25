@@ -58,6 +58,11 @@ NANO_TO_MILI = 1 / (1000 * 1000)
 KILO_TO_MEGA = 1 / 1024
 MEGA_TO_BYTE = 1024 * 1024
 KILO_TO_BYTE = 1024
+DEFAULT_BACKGROUND = (37, 37, 37)
+DEFAULT_STYLE = {
+    "color": "rgb(231, 231, 231)",
+    "background": "rgb(37, 37, 37)",
+}
 
 
 class Stat(Enum):
@@ -673,7 +678,8 @@ class SnapshotReport:
         Where each of the subdirs is a different stack level for that date.
         """
         logging.debug(
-            f"Generating SnapshotReport form dir {dir_path} with stack_levels {stack_levels} and stats {stats}"
+            f"Generating SnapshotReport form dir {dir_path} with "
+            f"stack_levels {stack_levels} and stats {stats}"
         )
         stack_level_reports = [
             StackLevelReport.from_dir(
@@ -686,7 +692,14 @@ class SnapshotReport:
             and stack_dir in [stack_level.name for stack_level in stack_levels]
         ]
         logging.debug(
-            f"Got {len(stack_level_reports)} stack level reports, for the stack levels {[level_report.stack_level for level_report in stack_level_reports]}"
+            f"Got {len(stack_level_reports)} stack level reports, for the "
+            "stack levels "
+            + str(
+                [
+                    level_report.stack_level
+                    for level_report in stack_level_reports
+                ]
+            )
         )
         return cls(
             stack_level_reports=stack_level_reports,
@@ -790,7 +803,9 @@ def iter_data(file_path: str, stat: Stat) -> Iterator[Tuple[int, float]]:
             cur_bucket_value * (num_values_in_bucket - 1) + new_value
         ) / num_values_in_bucket
 
-    logging.debug(f"Got {cur_bucket} (max_bucket={max_bucket}) buckets from {file_path}")
+    logging.debug(
+        f"Got {cur_bucket} (max_bucket={max_bucket}) buckets from {file_path}"
+    )
     yield (cur_bucket, cur_bucket_value)
 
     # pad with 0s, so we have arrays of the same shape/dimension to operate
@@ -941,7 +956,7 @@ def _get_stat_table(
     return Div(
         text=f"""
         {base_stats.stat.name} - {config}
-        <table style="background-color:black; color:white;" width="100%">
+        <table width="100%">
             <tr>
                 <th></th>
                 <th style="color:blue;">{base_name}</th>
@@ -978,7 +993,8 @@ def _get_stat_table(
             {ninety_percent_row}
         </table>
         <div style="color:grey;">*As given by fio</div>
-        """
+        """,
+        style=DEFAULT_STYLE,
     )
 
 
@@ -1065,7 +1081,11 @@ def compare_level_reports(
             )
         )
 
-    return Tabs(tabs=tabs, tabs_location="right")
+    return Tabs(
+        tabs=tabs,
+        tabs_location="right",
+        background=DEFAULT_BACKGROUND,
+    )
 
 
 def compare_snapshot_reports(
@@ -1079,7 +1099,8 @@ def compare_snapshot_reports(
                     text=(
                         STACK_LEVEL_DESCS[before_satck_report.stack_level]
                         + COMMON_DESC
-                    )
+                    ),
+                    style=DEFAULT_STYLE,
                 ),
                 compare_level_reports(
                     stats=stats,
@@ -1103,7 +1124,11 @@ def compare_snapshot_reports(
         f"Generating snapshot report Tab panel for {len(level_report_figures)}"
         " level reports."
     )
-    return Tabs(tabs=level_report_figures, tabs_location="above")
+    return Tabs(
+        tabs=level_report_figures,
+        tabs_location="above",
+        background=DEFAULT_BACKGROUND,
+    )
 
 
 @click.option("-v", "--verbose", is_flag=True)
@@ -1255,7 +1280,10 @@ def env_report(
         </h1>
         <div>{description}</div>
         """
-    desc_div = Div(text=side_text)
+    desc_div = Div(
+        text=side_text,
+        style=DEFAULT_STYLE,
+    )
     show(column(desc_div, full_report))
 
 
