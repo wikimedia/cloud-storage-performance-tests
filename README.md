@@ -54,12 +54,12 @@ locally the results (in the results directory).
 ### Generating a report from two full stack results
 
 Once you have at least two different result sets (the directories under ./results), you can generate a comparative
-report by running the script `generate_results.py`, that will build a self-contained html page with interactive graphs
+report by running the script `generate_reports.py`, that will build a self-contained html page with interactive graphs
 and some stats highlighting the results that are "better".
 
 Example:
 
-    ./generate_results.py \
+    ./generate_reports.py \
         --verbose env-report \
             --outfile-prefix reports/full_stack/2021-03-18_vs_2021-03-19 \
             --before-data-dir results/codfw/full_stack/2021-03-18_18-11-16 \
@@ -71,16 +71,28 @@ Example:
 ### Generating a report from two single results
 
 If you want to just compare two runs for a single stack level, or even compare just two any host runns, you can run
-`generate_results.py generate-level-report` and it will use only those two host runs. For example:
+`generate_reports.py generate-level-report` and it will use only those two host runs. For example:
 
 
     ./generate_reports.py \
         level-report \
-            --outfile-prefix vm_against_osd \
+            --outfile-prefix $(date +%Y-%m-%d)_vm_against_osd \
             -d results/full_stack/codfw/2021-03-19_15-41-05/vm_disk/ \
             -n VM \
             -D results/full_stack/codfw/2021-03-19_15-41-05/rbd_from_osd/ \
             -N OSD
+
+That will open a new browser window for you to preview the report. If everything is ok, in order to commit and make it
+available, you can gzip it:
+```
+gzip *vm_against_osd.html
+```
+and move it to the reports directory:
+```
+mv *vm_against_osd.html.gz reports/full_stack/
+```
+
+Now you can commit the report and the results and send a patch.
 
 ## Functional details
 ### vm_disk tests
