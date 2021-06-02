@@ -1,4 +1,4 @@
-import { Drawer, IconButton, makeStyles } from '@material-ui/core';
+import { IconButton, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import { useEffect, useState } from 'react';
@@ -68,9 +68,8 @@ const useStyles = makeStyles(() => ({
         width: '100%',
         fontSize: '20px',
     },
-    drawerPaper: {
-        position: 'relative',
-        whiteSpace: 'nowrap',
+    drawer: {
+        zIndex: 8,
         width: drawerWidth,
         color: 'rgb(231, 231, 231)',
         backgroundColor: '#373737',
@@ -83,6 +82,7 @@ export function ReportsList(): JSX.Element {
     const [report, setReport] = useState<Report>();
     const [open, setOpen] = React.useState(true);
     const handleDrawerOpen = () => {
+        console.log('Opening...');
         setOpen(true);
     };
     const handleDrawerClose = () => {
@@ -99,25 +99,22 @@ export function ReportsList(): JSX.Element {
 
     return (
         <div className={classes.reportsList}>
-            <IconButton onClick={handleDrawerOpen} className={classes.iconButton}>
-                <ChevronRightIcon />
-            </IconButton>
-            <Drawer
-                classes={{
-                    paper: clsx(classes.drawerPaper),
-                }}
-                open={open}
-            >
-                <div>
-                    <div className={classes.openDrawer}>
-                        <IconButton onClick={handleDrawerClose} className={classes.iconButton}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                        <div className={classes.drawerTitle}>Available reports</div>
-                    </div>
-                    <div className={classes.reportBullets}>
-                        {reports.sort().map((iter_report) => {
-                            return open ? (
+            <div hidden={open}>
+                <IconButton onClick={handleDrawerOpen} className={classes.iconButton} disableRipple={true}>
+                    <ChevronRightIcon />
+                </IconButton>
+            </div>
+            <div className={clsx(classes.drawer)} hidden={!open}>
+                <div className={classes.openDrawer}>
+                    <IconButton onClick={handleDrawerClose} className={classes.iconButton} disableRipple={true}>
+                        <ChevronLeftIcon />
+                    </IconButton>
+                    <div className={classes.drawerTitle}>Available reports</div>
+                </div>
+                <div className={classes.reportBullets}>
+                    {open ? (
+                        reports.sort().map((iter_report) => {
+                            return (
                                 <div
                                     className={
                                         report && iter_report.url === report.url ? classes.reportEntryNameSelected : classes.reportEntryName
@@ -131,13 +128,13 @@ export function ReportsList(): JSX.Element {
                                 >
                                     {iter_report.name}{' '}
                                 </div>
-                            ) : (
-                                <div />
                             );
-                        })}
-                    </div>
+                        })
+                    ) : (
+                        <div />
+                    )}
                 </div>
-            </Drawer>
+            </div>
             <ReportDetails report={report} />
         </div>
     );
