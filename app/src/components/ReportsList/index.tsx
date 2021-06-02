@@ -1,12 +1,93 @@
+import { Drawer, IconButton, makeStyles } from '@material-ui/core';
+import clsx from 'clsx';
 import React from 'react';
 import { useEffect, useState } from 'react';
 import { Report } from '../../types';
 import { ReportDetails } from '../ReportDetails';
-import './styles.css';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+
+const drawerWidth = 350;
+
+const useStyles = makeStyles(() => ({
+    root: {
+        display: 'flex',
+    },
+    toolbar: {
+        paddingRight: 24, // keep right padding when drawer closed
+    },
+    reportsList: {
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'row',
+    },
+    reportsSidebar: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '400px',
+    },
+    reportBullets: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '400px',
+    },
+    reportsListTitle: {
+        fontSize: 'large',
+        fontWeight: 'bold',
+        textAlign: 'center',
+        backgroundColor: 'dimgray',
+    },
+    reportEntryName: {
+        textAlign: 'left',
+        border: 'ghostwhite',
+        borderWidth: '10px',
+        '&:hover': {
+            textAlign: 'left',
+            backgroundColor: 'blue',
+        },
+    },
+    reportEntryNameSelected: {
+        textAlign: 'left',
+        backgroundColor: 'rgb(0, 0, 134)',
+    },
+    iconButton: {
+        color: '#fff',
+        backgroundColor: '#373737',
+    },
+    toolbarIcon: {
+        padding: '0 8px',
+    },
+    openDrawer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        textAlign: 'center',
+    },
+    drawerTitle: {
+        width: '100%',
+        fontSize: '20px',
+    },
+    drawerPaper: {
+        position: 'relative',
+        whiteSpace: 'nowrap',
+        width: drawerWidth,
+        color: 'rgb(231, 231, 231)',
+        backgroundColor: '#373737',
+    },
+}));
 
 export function ReportsList(): JSX.Element {
+    const classes = useStyles();
     const [reports, setReports] = useState<Array<Report>>([]);
     const [report, setReport] = useState<Report>();
+    const [open, setOpen] = React.useState(true);
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
 
     useEffect(() => {
         fetch('api/v1/reports/')
@@ -17,26 +98,46 @@ export function ReportsList(): JSX.Element {
     }, []);
 
     return (
-        <div className="reports-list">
-            <div className="reports-sidebar">
-                <div className="reports-list-title">Available reports</div>
-                <div className="report-bullets">
-                    {reports.map((iter_report) => {
-                        return (
-                            <div
-                                className={report && iter_report.url === report.url ? 'report-entry-name-selected' : 'report-entry-name'}
-                                key={iter_report.url}
-                                onClick={(elem) => {
-                                    console.log(elem);
-                                    setReport(iter_report);
-                                }}
-                            >
-                                {iter_report.name}{' '}
-                            </div>
-                        );
-                    })}
+        <div className={classes.reportsList}>
+            <IconButton onClick={handleDrawerOpen} className={classes.iconButton}>
+                <ChevronRightIcon />
+            </IconButton>
+            <Drawer
+                classes={{
+                    paper: clsx(classes.drawerPaper),
+                }}
+                open={open}
+            >
+                <div>
+                    <div className={classes.openDrawer}>
+                        <IconButton onClick={handleDrawerClose} className={classes.iconButton}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                        <div className={classes.drawerTitle}>Available reports</div>
+                    </div>
+                    <div className={classes.reportBullets}>
+                        {reports.sort().map((iter_report) => {
+                            return open ? (
+                                <div
+                                    className={
+                                        report && iter_report.url === report.url ? classes.reportEntryNameSelected : classes.reportEntryName
+                                    }
+                                    key={iter_report.url}
+                                    onClick={(elem) => {
+                                        console.log(elem);
+                                        setReport(iter_report);
+                                        setOpen(false);
+                                    }}
+                                >
+                                    {iter_report.name}{' '}
+                                </div>
+                            ) : (
+                                <div />
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            </Drawer>
             <ReportDetails report={report} />
         </div>
     );
