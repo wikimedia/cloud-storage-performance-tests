@@ -6,13 +6,19 @@ from flasgger import Swagger
 from dataclasses import dataclass
 
 
-app = Flask(__name__, static_folder="../app/build/static")
+THIS_FILE_FOLDER = os.path.realpath(os.path.dirname(__file__))
+REPO_FOLDER = os.path.realpath(os.path.join(THIS_FILE_FOLDER, ".."))
+REPORTS_FOLDER = os.path.join(REPO_FOLDER, "reports")
+APP_FOLDER = os.path.join(REPO_FOLDER, "app/build")
+STATIC_FILES_FOLDER = os.path.join(APP_FOLDER, "static")
+
+app = Flask(__name__, static_folder=STATIC_FILES_FOLDER)
 swagger = Swagger(app)
 
 
 if app.config["ENV"] == "production":
-    STATIC_FILES_HOST = "https://tools-static.wmflabs.org"
-    APP_BASE_PATH = "/cloud-ceph-performance-tests"
+    STATIC_FILES_HOST = ""
+    APP_BASE_PATH = ""
 
 elif app.config["ENV"] == "development":
     STATIC_FILES_HOST = "http://localhost:5000"
@@ -26,12 +32,13 @@ class Report:
     name: str
 
 
-def _load_reports(report_path: str = "../reports") -> List[Report]:
+def _load_reports(report_path: str = REPORTS_FOLDER) -> List[Report]:
     reports: List[Report] = []
-    report_path = os.path.realpath(os.path.expanduser(report_path))
+    print(report_path)
     (type_dirs_path, type_dirs, _) = next(os.walk(report_path))
     for report_type in type_dirs:
         (_, _, report_files) = next(os.walk(os.path.join(type_dirs_path, report_type)))
+        print(report_files)
         for report_file in report_files:
             report_name = report_file.split(".html", 1)[0]
             report_date = report_name.split("_", 1)[0]
@@ -54,7 +61,7 @@ def _load_reports(report_path: str = "../reports") -> List[Report]:
 
 @app.route("/")
 def index():
-    return send_from_directory("../app/build/", "index.html")
+    return send_from_directory(APP_FOLDER, "index.html")
 
 
 @app.route("/api/v1/reports/")
@@ -90,11 +97,11 @@ def reports():
 
 @app.route("/reports/<path:path>")
 def get_report(path: str):
-    full_gz_path = f"../reports/{path}.gz"
+    full_gz_path = f"{REPORTS_FOLDER}/{path}.gz"
     if os.path.exists(full_gz_path):
-        response = send_from_directory("../reports", path + ".gz")
+        response = send_from_directory(REPORTS_FOLDER, path + ".gz")
     else:
-        response = send_from_directory("../reports", path)
+        response = send_from_directory(REPORTS_FOLDER, path)
 
     return response
 
