@@ -113,7 +113,7 @@ export function ReportsList(): JSX.Element {
                 </div>
                 <div className={classes.reportBullets}>
                     {open ? (
-                        reports.sort().map((iter_report) => {
+                        reports.sort((a, b) => a.name > b.name ? -1 : 1 ).map((iter_report) => {
                             return (
                                 <div
                                     className={
