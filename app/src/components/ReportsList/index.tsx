@@ -81,12 +81,23 @@ export function ReportsList(): JSX.Element {
     const [reports, setReports] = useState<Array<Report>>([]);
     const [report, setReport] = useState<Report>();
     const [open, setOpen] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     const handleDrawerOpen = () => {
-        console.log('Opening...');
         setOpen(true);
     };
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleReportSelected = (iter_report: Report) => {
+        return () => {
+            setLoading(true);
+            setReport(iter_report);
+            setOpen(false);
+            setTimeout(() => {
+                setLoading(false);
+            }, 500);
+        };
     };
 
     useEffect(() => {
@@ -113,29 +124,29 @@ export function ReportsList(): JSX.Element {
                 </div>
                 <div className={classes.reportBullets}>
                     {open ? (
-                        reports.sort((a, b) => a.name > b.name ? -1 : 1 ).map((iter_report) => {
-                            return (
-                                <div
-                                    className={
-                                        report && iter_report.url === report.url ? classes.reportEntryNameSelected : classes.reportEntryName
-                                    }
-                                    key={iter_report.url}
-                                    onClick={(elem) => {
-                                        console.log(elem);
-                                        setReport(iter_report);
-                                        setOpen(false);
-                                    }}
-                                >
-                                    {iter_report.name}{' '}
-                                </div>
-                            );
-                        })
+                        reports
+                            .sort((a, b) => (a.name > b.name ? -1 : 1))
+                            .map((iter_report) => {
+                                return (
+                                    <div
+                                        className={
+                                            report && iter_report.url === report.url
+                                                ? classes.reportEntryNameSelected
+                                                : classes.reportEntryName
+                                        }
+                                        key={iter_report.url}
+                                        onClick={handleReportSelected(iter_report)}
+                                    >
+                                        {iter_report.name}{' '}
+                                    </div>
+                                );
+                            })
                     ) : (
                         <div />
                     )}
                 </div>
             </div>
-            <ReportDetails report={report} />
+            <ReportDetails report={report} loading={loading} />
         </div>
     );
 }

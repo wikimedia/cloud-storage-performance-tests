@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
         width: '50%',
     },
     detailsRoot: {
-        position: "absolute",
+        position: 'absolute',
         left: 50,
         height: '100%',
         width: '100%',
@@ -25,11 +25,11 @@ const useStyles = makeStyles(() => ({
         height: '100%',
         zIndex: 5,
         width: '100%',
-        position: "absolute",
+        position: 'absolute',
     },
 }));
 
-export function ReportDetails(props: { report: Report | null | undefined }): JSX.Element {
+export function ReportDetails(props: { report: Report | null | undefined, loading: boolean }): JSX.Element {
     const classes = useStyles();
 
     if (props.report == undefined || props.report === null) {
@@ -38,7 +38,7 @@ export function ReportDetails(props: { report: Report | null | undefined }): JSX
     return (
         <div className={classes.detailsRoot}>
             <div className={classes.progress}>Loading... hold your unicorns</div>
-            <iframe className={classes.iframe} src={props.report.url} />
+            {props.loading ? <div /> : <iframe className={classes.iframe} src={props.report.url} />}
         </div>
     );
 }
