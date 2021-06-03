@@ -34,11 +34,9 @@ class Report:
 
 def _load_reports(report_path: str = REPORTS_FOLDER) -> List[Report]:
     reports: List[Report] = []
-    print(report_path)
     (type_dirs_path, type_dirs, _) = next(os.walk(report_path))
     for report_type in type_dirs:
         (_, _, report_files) = next(os.walk(os.path.join(type_dirs_path, report_type)))
-        print(report_files)
         for report_file in report_files:
             report_name = report_file.split(".html", 1)[0]
             report_date = report_name.split("_", 1)[0]
