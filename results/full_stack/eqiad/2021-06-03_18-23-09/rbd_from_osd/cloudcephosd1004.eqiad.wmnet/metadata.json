@@ -1,0 +1,8 @@
+{
+    "test_info": {
+        "num_passes": "3",
+        "stack_level": "rbd_from_osd",
+        "script": "rbd_tests.sh",
+        "host": "cloudcephosd1004.eqiad.wmnet"
+    }
+}

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
-from typing import List
+import json
+from typing import Any, Dict, List
 from flask import Flask, jsonify, send_from_directory
 from flasgger import Swagger
 from dataclasses import dataclass
@@ -30,6 +31,7 @@ class Report:
     date: str
     url: str
     name: str
+    metadata: Dict[str, Any]
 
 
 def _load_reports(report_path: str = REPORTS_FOLDER) -> List[Report]:
@@ -38,7 +40,17 @@ def _load_reports(report_path: str = REPORTS_FOLDER) -> List[Report]:
     for report_type in type_dirs:
         (_, _, report_files) = next(os.walk(os.path.join(type_dirs_path, report_type)))
         for report_file in report_files:
+            if not report_file.endswith(".html.gz"):
+                continue
+
+            cur_dir = f"{REPORTS_FOLDER}/{report_type}"
             report_name = report_file.split(".html", 1)[0]
+            metadata_path = os.path.join(cur_dir, report_name + ".metadata.json")
+            if os.path.exists(metadata_path):
+                metadata = json.loads(open(metadata_path).read())
+            else:
+                metadata = {"reason": f"Unable to find metadata file {metadata_path}"}
+
             report_date = report_name.split("_", 1)[0]
             if not report_date.startswith("20"):
                 report_date = ""
@@ -46,11 +58,13 @@ def _load_reports(report_path: str = REPORTS_FOLDER) -> List[Report]:
             report_url = f"{STATIC_FILES_HOST}{APP_BASE_PATH}/reports/{report_type}/{report_file}"
             if report_url.endswith(".html.gz"):
                 report_url = report_url.rsplit(".", 1)[0]
+
             reports.append(
                 Report(
                     date=report_date,
                     name=report_name,
                     url=report_url,
+                    metadata=metadata,
                 )
             )
 
@@ -80,8 +94,8 @@ def reports():
             type: string
           url:
             type: string
-          date:
-            type: string
+          metadata:
+            type: object
     responses:
       200:
         description: A list of reports

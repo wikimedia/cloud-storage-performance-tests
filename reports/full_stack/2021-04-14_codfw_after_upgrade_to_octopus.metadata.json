@@ -1,0 +1,111 @@
+{
+    "creation_time": "2021-06-04_17-14-51",
+    "report_file": "reports/full_stack/2021-05-25_after_ceph_upgrade_v2.html",
+    "results": {
+        "before": {
+            "path": "results/full_stack/codfw/2021-03-26_14-47-23",
+            "metadata": {
+                "date": "2021-03-26_14-47-23",
+                "site": "codfw",
+                "tests": {
+                    "rbd_from_osd": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "rbd_from_osd",
+                            "script": "rbd_tests.sh",
+                            "host": "cloudcephosd2001-dev.codfw.wmnet"
+                        },
+                        "host_info": {
+                            "fqdn": "cloudcephosd2001-dev.codfw.wmnet",
+                            "model": "PowerEdge R440",
+                            "rack": "B1"
+                        }
+                    },
+                    "rbd_from_hypervisor": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "rbd_from_hypervisor",
+                            "script": "rbd_tests.sh",
+                            "host": "cloudvirt2002-dev.codfw.wmnet"
+                        },
+                        "host_info": {
+                            "fqdn": "cloudvirt2002-dev.codfw.wmnet",
+                            "model": "PowerEdge R640",
+                            "rack": "B5"
+                        }
+                    },
+                    "vm_disk": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "vm_disk",
+                            "script": "disk_tests.sh",
+                            "host": "performance-test.testlabs.codfw1dev.wikimedia.cloud"
+                        },
+                        "host_info": {
+                            "fqdn": "performance-test.testlabs.codfw1dev.wikimedia.cloud",
+                            "model": "virtual",
+                            "vm_info": "performance-test"
+                        }
+                    }
+                },
+                "duration_secs": 55206.192828416824
+            }
+        },
+        "after": {
+            "path": "results/full_stack/codfw/2021-04-14_13-02-21",
+            "metadata": {
+                "date": "2021-04-14_13-02-21",
+                "site": "codfw",
+                "tests": {
+                    "rbd_from_osd": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "rbd_from_osd",
+                            "script": "rbd_tests.sh",
+                            "host": "cloudcephosd2001-dev.eqiad.wmnet"
+                        },
+                        "host_info": {
+                            "fqdn": "cloudcephosd2001-dev.eqiad.wmnet",
+                            "model": "PowerEdge R440",
+                            "rack": "B1"
+                        }
+                    },
+                    "rbd_from_hypervisor": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "rbd_from_hypervisor",
+                            "script": "rbd_tests.sh",
+                            "host": "cloudvirt2003-dev.codfw.wmnet"
+                        },
+                        "host_info": {
+                            "fqdn": "cloudvirt2003-dev.codfw.wmnet",
+                            "model": "PowerEdge R640",
+                            "rack": "B8"
+                        }
+                    },
+                    "vm_disk": {
+                        "test_info": {
+                            "num_passes": "3",
+                            "stack_level": "vm_disk",
+                            "script": "disk_tests.sh",
+                            "host": "performance-test.testlabs.eqiad1.wikimedia.cloud"
+                        },
+                        "host_info": {
+                            "fqdn": "performance-test.testlabs.eqiad1.wikimedia.cloud",
+                            "model": "virtual",
+                            "vm_info": {
+                                "ID": "ff5fe814-02ca-4f6e-8fc3-f64c0937eda2",
+                                "Name": "performance-test",
+                                "Status": "ACTIVE",
+                                "Networks": "lan-flat-cloudinstances2b=172.16.4.110",
+                                "Image": "debian-10.0-buster",
+                                "Flavor": "g3.cores1.ram2.disk20"
+                            }
+                        }
+                    }
+                },
+                "duration_secs": 3317.542816400528
+            }
+        }
+    }
+}

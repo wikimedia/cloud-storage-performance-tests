@@ -1,16 +1,18 @@
 import React from 'react';
-import { Report } from '../../types';
+import { ReportT } from '../../types';
 import { makeStyles } from '@material-ui/core';
+import { ReportMetadata } from '../ReportMetadata';
 
 const useStyles = makeStyles(() => ({
     selectReport: {
         position: 'absolute',
         left: '500px',
+        down: '200px',
         fontSize: '100px',
     },
     progress: {
         position: 'absolute',
-        top: 50,
+        top: 70,
         left: 500,
         zIndex: 0,
         width: '50%',
@@ -26,10 +28,11 @@ const useStyles = makeStyles(() => ({
         zIndex: 5,
         width: '100%',
         position: 'absolute',
+        top: 50,
     },
 }));
 
-export function ReportDetails(props: { report: Report | null | undefined, loading: boolean }): JSX.Element {
+export function ReportDetails(props: { report: ReportT | null | undefined; loading: boolean }): JSX.Element {
     const classes = useStyles();
 
     if (props.report == undefined || props.report === null) {
@@ -37,8 +40,14 @@ export function ReportDetails(props: { report: Report | null | undefined, loadin
     }
     return (
         <div className={classes.detailsRoot}>
-            <div className={classes.progress}>Loading... hold your unicorns</div>
-            {props.loading ? <div /> : <iframe className={classes.iframe} src={props.report.url} />}
+            {props.loading ? (
+                <div className={classes.progress}>Loading... hold your unicorns</div>
+            ) : (
+                <div>
+                    <ReportMetadata report={props.report} />
+                    <iframe className={classes.iframe} src={props.report.url} />
+                </div>
+            )}
         </div>
     );
 }

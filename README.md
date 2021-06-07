@@ -39,14 +39,14 @@ The chosen stack levels are:
 ## Gathering data
 ### Executing a full stack test
 
-There's a python script `run_on_env.py` that will randomly gather one host from each stack level, run the test and
-gather the results under the same directory (under 'results/<SITE_NAME>/<DATETIME>').
+There's a python script `scripts/run_on_env.py` that will randomly gather one host from each stack level, run the test and
+gather the results under the parent directory (under 'results/<SITE_NAME>/<DATETIME>').
 
 The results will be ready to use to generate a full stack comparison report.
 
 ### Executing a test on a single machine and gathering results
 
-There's a helper script, `execute_remote_test.sh` that will run the given stack layer tests on the given host and copy
+There's a helper script, `scripts/execute_remote_test.sh` that will run the given stack layer tests on the given host and copy
 locally the results (in the results directory).
 
 
@@ -54,12 +54,12 @@ locally the results (in the results directory).
 ### Generating a report from two full stack results
 
 Once you have at least two different result sets (the directories under ./results), you can generate a comparative
-report by running the script `generate_reports.py`, that will build a self-contained html page with interactive graphs
+report by running the script `scripts/generate_reports.py`, that will build a self-contained html page with interactive graphs
 and some stats highlighting the results that are "better".
 
 Example:
 
-    ./generate_reports.py \
+    ./scripts/generate_reports.py \
         --verbose env-report \
             --outfile-prefix reports/full_stack/2021-03-18_vs_2021-03-19 \
             --before-data-dir results/codfw/full_stack/2021-03-18_18-11-16 \
@@ -74,7 +74,7 @@ If you want to just compare two runs for a single stack level, or even compare j
 `generate_reports.py generate-level-report` and it will use only those two host runs. For example:
 
 
-    ./generate_reports.py \
+    ./scripts/generate_reports.py \
         level-report \
             --outfile-prefix $(date +%Y-%m-%d)_vm_against_osd \
             -d results/full_stack/codfw/2021-03-19_15-41-05/vm_disk/ \

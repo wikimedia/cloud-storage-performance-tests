@@ -1,0 +1,46 @@
+{
+    "date": "2021-06-03_18-23-09",
+    "site": "eqiad",
+    "tests": {
+        "rbd_from_osd": {
+            "test_info": {
+                "num_passes": "3",
+                "stack_level": "rbd_from_osd",
+                "script": "rbd_tests.sh",
+                "host": "cloudcephosd1004.eqiad.wmnet"
+            },
+            "host_info": {
+                "fqdn": "cloudcephosd1004.eqiad.wmnet",
+                "model": "PowerEdge R440",
+                "rack": "C8"
+            }
+        },
+        "rbd_from_hypervisor": {
+            "test_info": {
+                "num_passes": "3",
+                "stack_level": "rbd_from_hypervisor",
+                "script": "rbd_tests.sh",
+                "host": "cloudvirt1037.eqiad.wmnet"
+            },
+            "host_info": {
+                "fqdn": "cloudvirt1037.eqiad.wmnet",
+                "model": "PowerEdge R640",
+                "rack": "D5"
+            }
+        },
+        "vm_disk": {
+            "test_info": {
+                "num_passes": "3",
+                "stack_level": "vm_disk",
+                "script": "disk_tests.sh",
+                "host": "performance-test.testlabs.eqiad1.wikimedia.cloud"
+            },
+            "host_info": {
+                "fqdn": "performance-test.testlabs.eqiad1.wikimedia.cloud",
+                "model": "virtual",
+                "vm_info": "performance-test"
+            }
+        }
+    },
+    "duration_secs": 55206.192828416824
+}

@@ -1,0 +1,8 @@
+{
+    "test_info": {
+        "num_passes": "3",
+        "stack_level": "rbd_from_hypervisor",
+        "script": "rbd_tests.sh",
+        "host": "cloudvirt1029.eqiad.wmnet"
+    }
+}

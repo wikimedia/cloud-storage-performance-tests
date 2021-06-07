@@ -2,10 +2,11 @@ import { IconButton, makeStyles } from '@material-ui/core';
 import clsx from 'clsx';
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { Report } from '../../types';
+import { ReportT } from '../../types';
 import { ReportDetails } from '../ReportDetails';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import Divider from '@material-ui/core/Divider';
 
 const drawerWidth = 350;
 
@@ -40,8 +41,6 @@ const useStyles = makeStyles(() => ({
     },
     reportEntryName: {
         textAlign: 'left',
-        border: 'ghostwhite',
-        borderWidth: '10px',
         '&:hover': {
             textAlign: 'left',
             backgroundColor: 'blue',
@@ -67,19 +66,26 @@ const useStyles = makeStyles(() => ({
     drawerTitle: {
         width: '100%',
         fontSize: '20px',
+        fontWeight: 'bold',
     },
-    drawer: {
+    drawerOpen: {
         zIndex: 8,
         width: drawerWidth,
         color: 'rgb(231, 231, 231)',
         backgroundColor: '#373737',
     },
+    drawerClosed: {
+        zIndex: 8,
+        color: 'rgb(231, 231, 231)',
+        backgroundColor: '#373737',
+        width: '50px',
+    },
 }));
 
 export function ReportsList(): JSX.Element {
     const classes = useStyles();
-    const [reports, setReports] = useState<Array<Report>>([]);
-    const [report, setReport] = useState<Report>();
+    const [reports, setReports] = useState<Array<ReportT>>([]);
+    const [report, setReport] = useState<ReportT>();
     const [open, setOpen] = React.useState(true);
     const [loading, setLoading] = React.useState(false);
     const handleDrawerOpen = () => {
@@ -89,7 +95,7 @@ export function ReportsList(): JSX.Element {
         setOpen(false);
     };
 
-    const handleReportSelected = (iter_report: Report) => {
+    const handleReportSelected = (iter_report: ReportT) => {
         return () => {
             setLoading(true);
             setReport(iter_report);
@@ -110,12 +116,12 @@ export function ReportsList(): JSX.Element {
 
     return (
         <div className={classes.reportsList}>
-            <div hidden={open}>
+            <div className={classes.drawerClosed} hidden={open} onClick={handleDrawerOpen}>
                 <IconButton onClick={handleDrawerOpen} className={classes.iconButton} disableRipple={true}>
                     <ChevronRightIcon />
                 </IconButton>
             </div>
-            <div className={clsx(classes.drawer)} hidden={!open}>
+            <div className={clsx(classes.drawerOpen)} hidden={!open} onClick={handleDrawerClose} >
                 <div className={classes.openDrawer}>
                     <IconButton onClick={handleDrawerClose} className={classes.iconButton} disableRipple={true}>
                         <ChevronLeftIcon />
@@ -123,6 +129,7 @@ export function ReportsList(): JSX.Element {
                     <div className={classes.drawerTitle}>Available reports</div>
                 </div>
                 <div className={classes.reportBullets}>
+                    <Divider />
                     {open ? (
                         reports
                             .sort((a, b) => (a.name > b.name ? -1 : 1))

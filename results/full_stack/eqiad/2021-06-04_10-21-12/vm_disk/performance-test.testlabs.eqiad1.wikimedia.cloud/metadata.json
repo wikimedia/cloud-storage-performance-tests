@@ -1,0 +1,8 @@
+{
+    "test_info": {
+        "num_passes": "3",
+        "stack_level": "vm_disk",
+        "script": "disk_tests.sh",
+        "host": "performance-test.testlabs.eqiad1.wikimedia.cloud"
+    }
+}
